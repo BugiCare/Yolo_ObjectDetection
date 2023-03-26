@@ -20,7 +20,6 @@ client_socket, addr = server_socket.accept()
 
 # 영상 수신 및 처리
 while True:
-    print("ing")
     # 데이터 길이 수신
     data = client_socket.recv(16)
     if not data:
@@ -36,7 +35,7 @@ while True:
         data += packet
 
     # 수신한 데이터 디코딩 및 처리
-    np_data = np.fromstring(data, dtype=np.uint8)
+    np_data = np.frombuffer(data, dtype=np.uint8)
     frame = cv2.imdecode(np_data, cv2.IMREAD_GRAYSCALE)
 
     # 처리된 영상 출력
@@ -50,7 +49,7 @@ while True:
     cv2.imshow('YOLO', np.squeeze(results.render()))
     
     flag = 0
-    
+    print("===============================")    
     if("closeRefrigerator" in str(results)):
         flag = 1
         print("closeRefrigerator")
@@ -68,6 +67,7 @@ while True:
         print("standingPerson")    
     if (flag == 0):
         print("none")
+    print("===============================")
 
     # 키 입력 대기
     if cv2.waitKey(1) & 0xFF == ord('q'):
