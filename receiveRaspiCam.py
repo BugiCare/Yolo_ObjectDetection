@@ -49,18 +49,20 @@ while True:
     if("closeRefrigerator" in str(results)):
         flag = 1
         print("closeRefrigerator")
+    elif("openRefrigerator" in str(results)):
+        flag = 1
+        print("openRefrigerator")
+
     if("fallenPerson" in str(results)):
         flag = 1
         print("fallenPerson")
-    if("openRefrigerator" in str(results)):
-        flag = 1
-        print("openRefrigerator")
-    if("sleepingPerson" in str(results)):
+    elif("sleepingPerson" in str(results)):
         flag = 1
         print("sleepingPerson")
-    if("standingPerson" in str(results)):
+    elif("standingPerson" in str(results)):
         flag = 1
         print("standingPerson")    
+        
     if (flag == 0):
         print("none")
     print("===============================")
