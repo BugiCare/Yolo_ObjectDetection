@@ -36,7 +36,7 @@ while True:
 
     # 수신한 데이터 디코딩 및 처리
     np_data = np.frombuffer(data, dtype=np.uint8)
-    frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
+    frame = cv2.imdecode(np_data, cv2.IMREAD_UNCHANGED)
 
     # Make detections in Real-time
     results = model(frame) # pass frame to Yolov5 Model and get result

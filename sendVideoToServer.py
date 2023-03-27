@@ -15,12 +15,9 @@ while True:
     # 영상 촬영
     ret, frame = camera.read()
 
-    # 영상 처리
-    processed_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
     # 영상 전송
     encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
-    result, imgencode = cv2.imencode('.jpg', processed_frame, encode_param)
+    result, imgencode = cv2.imencode('.jpg', frame, encode_param)
     data = np.array(imgencode)
     string_data = data.tostring()
     client_socket.send(str(len(string_data)).ljust(16).encode())
