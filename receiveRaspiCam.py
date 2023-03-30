@@ -4,6 +4,7 @@ import torch
 import numpy as np
 
 # 소켓 생성
+
 HOST = '0.0.0.0'
 PORT = 1234
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -45,26 +46,33 @@ while True:
     cv2.imshow('YOLO', np.squeeze(results.render()))
     
     flag = 0
+    refriStatus = ""
+    doorStatus = ""
+    personStatus = ""
+    
     print("===============================")    
     if("closeRefrigerator" in str(results)):
         flag = 1
-        print("closeRefrigerator")
+        refriStatus = "closeRefrigerator"
     elif("openRefrigerator" in str(results)):
         flag = 1
-        print("openRefrigerator")
+        refriStatus = "openRefrigerator"
 
     if("fallenPerson" in str(results)):
         flag = 1
-        print("fallenPerson")
+        personStatus = "fallenPerson"
     elif("sleepingPerson" in str(results)):
         flag = 1
-        print("sleepingPerson")
+        personStatus = "sleepingPerson"
     elif("standingPerson" in str(results)):
         flag = 1
-        print("standingPerson")    
+        personStatus = "standingPerson"  
         
     if (flag == 0):
         print("none")
+
+    print(refriStatus)
+    print(personStatus)
     print("===============================")
 
     # 키 입력 대기

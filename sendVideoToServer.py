@@ -3,6 +3,7 @@ import socket
 import numpy as np
 
 # 소켓 생성
+
 HOST = '192.168.1.5'
 PORT = 1234
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
