@@ -5,11 +5,11 @@ import numpy as np
 
 # 소켓 생성
 
-HOST = '0.0.0.0'
-PORT = 1234
+receiveHOST = '0.0.0.0'
+receivePORT = 1111
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_socket.bind((HOST, PORT))
+server_socket.bind((receiveHOST, receivePORT))
 server_socket.listen()
 
 # load Model
@@ -17,12 +17,12 @@ model = torch.hub.load('ultralytics/yolov5', 'custom', path='yolov5/runs/train/e
 
 
 # 클라이언트 연결 대기
-client_socket, addr = server_socket.accept()
+conn, addr = server_socket.accept()
 
 # 영상 수신 및 처리
 while True:
     # 데이터 길이 수신
-    data = client_socket.recv(16)
+    data = conn.recv(16)
     if not data:
         break
     data_length = int(data)
@@ -30,7 +30,7 @@ while True:
     # 데이터 수신
     data = b''
     while len(data) < data_length:
-        packet = client_socket.recv(data_length - len(data))
+        packet = conn.recv(data_length - len(data))
         if not packet:
             break
         data += packet
@@ -49,6 +49,8 @@ while True:
     refriStatus = ""
     doorStatus = ""
     personStatus = ""
+
+    text = ""
     
     print("===============================")    
     if("closeRefrigerator" in str(results)):
@@ -75,12 +77,24 @@ while True:
     print(personStatus)
     print("===============================")
 
+    text = refriStatus + " " + doorStatus + " " + personStatus
+    sendHOST = 'localhost'  # 스프링부트 서버의 IP 주소
+    sendPORT = 2222    # 스프링부트 서버와 통신할 포트 번호
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)        
+    client_socket.connect((sendHOST, sendPORT))
+
+    # 텍스트 전달
+    client_socket.sendall(text.encode())
+
+    # 소켓 종료
+    client_socket.close()
+
+
     # 키 입력 대기
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
 # 소켓 종료
-client_socket.close()
 server_socket.close()
 
 # OpenCV 윈도우 종료
