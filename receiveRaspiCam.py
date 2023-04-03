@@ -17,12 +17,12 @@ model = torch.hub.load('ultralytics/yolov5', 'custom', path='yolov5/runs/train/e
 
 
 # 클라이언트 연결 대기
-conn, addr = server_socket.accept()
+client_socket, addr = server_socket.accept()
 
 # 영상 수신 및 처리
 while True:
     # 데이터 길이 수신
-    data = conn.recv(16)
+    data = client_socket.recv(16)
     if not data:
         break
     data_length = int(data)
@@ -30,7 +30,7 @@ while True:
     # 데이터 수신
     data = b''
     while len(data) < data_length:
-        packet = conn.recv(data_length - len(data))
+        packet = client_socket.recv(data_length - len(data))
         if not packet:
             break
         data += packet
