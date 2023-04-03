@@ -45,39 +45,27 @@ while True:
     # 처리된 영상 출력
     cv2.imshow('YOLO', np.squeeze(results.render()))
     
-    flag = 0
-    refriStatus = ""
-    doorStatus = ""
-    personStatus = ""
-
-    text = ""
+    resultText = ""
     
     print("===============================")    
     if("closeRefrigerator" in str(results)):
-        flag = 1
-        refriStatus = "closeRefrigerator"
+        resultText = "closeRefrigerator" + "  "
     elif("openRefrigerator" in str(results)):
-        flag = 1
-        refriStatus = "openRefrigerator"
+        resultText = "openRefrigerator" + "  "
 
     if("fallenPerson" in str(results)):
-        flag = 1
-        personStatus = "fallenPerson"
+        resultText = "fallenPerson" + "  "
     elif("sleepingPerson" in str(results)):
-        flag = 1
-        personStatus = "sleepingPerson"
+        resultText = "sleepingPerson" + "  "
     elif("standingPerson" in str(results)):
-        flag = 1
-        personStatus = "standingPerson"  
+        resultText = "standingPerson" + "  "
         
-    if (flag == 0):
-        print("none")
+    if (resultText == ""):
+        resultText = "none"
 
-    print(refriStatus)
-    print(personStatus)
+    print(resultText)
     print("===============================")
 
-    text = refriStatus + " " + doorStatus + " " + personStatus
 
     sendHOST = '192.168.1.5'  # 스프링부트 서버의 IP 주소
     sendPORT = 2222    # 스프링부트 서버와 통신할 포트 번호
@@ -85,7 +73,7 @@ while True:
     client_socket.connect((sendHOST, sendPORT))
 
     # 텍스트 전달
-    client_socket.sendall(text.encode())
+    client_socket.sendall(resultText.encode())
 
     # 소켓 종료
     client_socket.close()
