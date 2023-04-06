@@ -1,34 +1,21 @@
 import cv2
 import base64
-import eventlet
+import numpy as np
 from flask import Flask
 from flask_socketio import SocketIO
 
 app = Flask(__name__)
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins='*')
 
-# 카메라 캡처
-camera = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0)
 
-@socketio.on('connect')
-def connect():
-    print('connected')
-
-@socketio.on('disconnect')
-def disconnect():
-    print('disconnected')
-
-@socketio.on('stream')
-def stream():
+def video_feed():
     while True:
-        # 프레임 캡처 및 인코딩
-        _, frame = camera.read()
-        _, buffer = cv2.imencode('.png', frame)
-        jpg_as_text = base64.b64encode(buffer).decode('utf-8')
-
-        # 클라이언트로 이미지 전송
-        socketio.emit('image', jpg_as_text)
+        ret, frame = cap.read()
+        _, img_encoded = cv2.imencode('.jpg', frame)
+        data = base64.b64encode(img_encoded).decode('utf-8')
+        socketio.emit('image', data)
 
 if __name__ == '__main__':
-    # 웹 서버 실행
-    eventlet.wsgi.server(eventlet.listen(('0.0.0.0', 8000)), app)
+    socketio.start_background_task(video_feed)
+    socketio.run(app, host='192.168.1.5')
