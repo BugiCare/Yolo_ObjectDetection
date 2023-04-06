@@ -17,7 +17,7 @@ while True:
     ret, frame = camera.read()
 
     # 영상 전송
-    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 150]
+    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 1000]
     result, imgencode = cv2.imencode('.jpg', frame, encode_param)
     data = np.array(imgencode)
     string_data = data.tostring()
