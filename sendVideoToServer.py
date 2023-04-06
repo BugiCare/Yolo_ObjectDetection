@@ -17,7 +17,7 @@ while True:
     ret, frame = camera.read()
 
     # 영상 전송
-    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 150]
     result, imgencode = cv2.imencode('.jpg', frame, encode_param)
     data = np.array(imgencode)
     string_data = data.tostring()
@@ -25,7 +25,7 @@ while True:
     client_socket.send(string_data)
 
     # 키 입력 대기
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(0.5) & 0xFF == ord('q'):
         break
 
 # 소켓 종료

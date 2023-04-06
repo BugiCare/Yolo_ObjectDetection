@@ -16,16 +16,13 @@ server_socket.listen()
 # load Model
 model = torch.hub.load('ultralytics/yolov5', 'custom', path='yolov5/runs/train/exp/weights/last.pt', force_reload = True)
 
-sendHOST = '192.168.1.5'  # 스프링부트 서버의 IP 주소
+sendHOST = '15.164.7.163'  # 스프링부트 서버의 IP 주소
 sendPORT = 2222    # 스프링부트 서버와 통신할 포트 번호
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)        
 client_socket.connect((sendHOST, sendPORT))
 
 # 클라이언트 연결 대기
 conn, addr = server_socket.accept()
-
-# time.sleep(5) 썼더니 영상프레임도 5초마다 와서 timeCount 변수 생성
-timeCount = 30
 
 # 영상 수신 및 처리
 while True:
@@ -76,16 +73,6 @@ while True:
 
     # 텍스트 전달
     resultText += "\n"
-
-    if timeCount == 30:  # 체감상 한 3초
-        client_socket.sendall(resultText.encode())
-
-    # 1초 감소
-    timeCount -= 1
-
-    if timeCount == 0:
-        # 0초가 되면 다시 5초 카운트
-        timeCount = 30
 
     # 키 입력 대기
     if cv2.waitKey(1) & 0xFF == ord('q'):
