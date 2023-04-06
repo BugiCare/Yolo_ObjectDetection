@@ -25,7 +25,7 @@ while True:
     client_socket.send(string_data)
 
     # 키 입력 대기
-    if cv2.waitKey(0.5) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
 # 소켓 종료
