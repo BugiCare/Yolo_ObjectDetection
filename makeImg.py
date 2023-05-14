@@ -5,8 +5,8 @@ import cv2
 
 
 IMAGES_PATH = os.path.join('data', 'newimages')   # 이미지 저장 경로 (/data/images)
-labels = ['openRefrigerator', 'closeRefrigerator', 'fallenPerson', 'standingPerson', 'sleepingPerson']   # 분류할 클래스 5개 (일단 문은 빼고)
-number_imgs = 320   # 각 클래스마다 수집하고 싶은 이미지 수(잘못 찍힐 것까지 고려)
+labels = ['openRefrigerator', 'closeRefrigerator', 'openDoor', 'closeDoor', 'fallenPerson', 'sleepingPerson']   # 분류할 클래스 6개
+number_imgs = 220   # 각 클래스마다 수집하고 싶은 이미지 수(잘못 찍힐 것까지 고려)
 
 cap = cv2.VideoCapture(0)
 
