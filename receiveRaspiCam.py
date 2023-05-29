@@ -4,7 +4,6 @@ import torch
 import numpy as np
 
 # 소켓 생성
-
 receiveHOST = '0.0.0.0'
 receivePORT = 1111
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -14,12 +13,6 @@ server_socket.listen()
 
 # load Model
 model = torch.hub.load('ultralytics/yolov5', 'custom', path='yolov5/runs/train/exp/weights/last.pt', force_reload = True)
-
-# sendHOST = '15.164.7.163'  # 스프링부트 서버의 IP 주소
-#sendHOST = 'localhost'  # 스프링부트 서버의 IP 주소
-#sendPORT = 2222    # 스프링부트 서버와 통신할 포트 번호
-#client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)        
-#client_socket.connect((sendHOST, sendPORT))
 
 # 클라이언트 연결 대기
 conn, addr = server_socket.accept()
@@ -51,30 +44,10 @@ while True:
     # 처리된 영상 출력
     cv2.imshow('YOLO', np.squeeze(results.render()))
     
-    resultText = ""
     
-    print("===============================")    
-    if("closeRefrigerator" in str(results)):
-        resultText += "closeRefrigerator  "
-    elif("openRefrigerator" in str(results)):
-        resultText += "openRefrigerator  "
-
-    if("fallenPerson" in str(results)):
-        resultText += "fallenPerson  "
-    elif("sleepingPerson" in str(results)):
-        resultText += "sleepingPerson  "
-    elif("standingPerson" in str(results)):
-        resultText += "standingPerson  "
-        
-    if (resultText == ""):
-        resultText = "none"
-
-    print(resultText)
     print("===============================")
-
-    # 텍스트 전달
-    resultText += "\n"
-   # client_socket.sendall(resultText.encode())
+    print(results)
+    print("===============================")
 
      # 키 입력 대기
     if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -82,7 +55,6 @@ while True:
 
 # 소켓 종료
 conn.close()
-#client_socket.close()
 server_socket.close()
 
 # OpenCV 윈도우 종료
